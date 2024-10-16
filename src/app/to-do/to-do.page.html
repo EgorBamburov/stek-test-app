@@ -6,10 +6,10 @@
 
 <ion-content>
   <ion-list>
-    @if (toDoList$().length) {
-      @for (toDoItem of toDoList$(); track toDoItem.id){
+    @if (toDoPageService.toDoList$().length) {
+      @for (toDoItem of toDoPageService.toDoList$(); track toDoItem.id){
         <ion-item>
-          {{ toDoItem.name }}
+          {{ toDoItem.title }}
         </ion-item>
       }
     } @else {

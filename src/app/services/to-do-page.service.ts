@@ -1,43 +1,44 @@
-import { Injectable } from '@angular/core';
+import {DestroyRef, inject, Injectable, signal} from '@angular/core';
 import {IToDoElement} from "../interfaces/to-do-page/to-do-element.interface";
+import {HttpClient} from "@angular/common/http";
+import {map, take} from "rxjs";
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToDoPageService {
+  private http = inject(HttpClient)
 
-  constructor() { }
+  constructor() {}
 
-  public toDoList: IToDoElement[] = [
-    {
-      id: '1',
-      name: 'test 1',
-    },
-    {
-      id: '2',
-      name: 'test 2',
-    },
-    {
-      id: '2',
-      name: 'test 3',
-    },
-    {
-      id: '3',
-      name: 'test 4',
-    }
-  ]
+  public toDoList$ = signal<IToDoElement[]>([])
 
-  public getTodoList(): IToDoElement[] {
-    return this.toDoList
+  public getTodoList(destroy: DestroyRef): void {
+    this.http.get('https://jsonplaceholder.typicode.com/todos')
+      .pipe(takeUntilDestroyed(destroy))
+      .subscribe({
+      next: (res) => this.toDoList$.set(res as IToDoElement[])
+    })
   }
 
-  public addToDo(): void {
-    const id = (this.toDoList.length + 1).toString()
-    const name = `test ${id}`
+  public addToDo(destroy: DestroyRef): void {
+    const id = (this.toDoList$().length + 1)
+    const title = `test ${id}`
+    const userId = 1
+    const completed = false
 
-    this.toDoList.push({
+    const toDoItem: IToDoElement = {
       id,
-      name
+      title,
+      userId,
+      completed
+    }
+
+    this.http.post('https://jsonplaceholder.typicode.com/todos', toDoItem)
+      .pipe(takeUntilDestroyed(destroy))
+      .subscribe({
+      next: (res) => this.toDoList$().push(res as IToDoElement)
     })
   }
 }

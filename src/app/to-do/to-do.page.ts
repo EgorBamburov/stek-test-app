@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit, signal} from '@angular/core';
 import {ToDoPageService} from "../services/to-do-page.service";
 import {single} from "rxjs";
 import {IToDoElement} from "../interfaces/to-do-page/to-do-element.interface";
@@ -9,18 +9,16 @@ import {IToDoElement} from "../interfaces/to-do-page/to-do-element.interface";
   styleUrls: ['./to-do.page.scss'],
 })
 export class ToDoPage implements OnInit {
-  public toDoList$ = signal<IToDoElement[]>([])
+  public toDoPageService = inject(ToDoPageService)
 
-  private toDoPageService = inject(ToDoPageService)
-
-  constructor() {}
+  constructor(private destroy: DestroyRef) {}
 
   ngOnInit(): void {
-    this.toDoList$.set(this.toDoPageService.getTodoList())
+    this.toDoPageService.getTodoList(this.destroy)
   }
 
   public addToDo(): void {
-    this.toDoPageService.addToDo()
+    this.toDoPageService.addToDo(this.destroy)
   }
 
 }

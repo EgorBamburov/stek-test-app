@@ -1,4 +1,6 @@
 export interface IToDoElement {
-  id: string,
-  name: string,
+  userId: number
+  id: number
+  title: string
+  completed: boolean
 }
