@@ -1,0 +1,25 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>To Do List</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    @if (toDoList$().length) {
+      @for (toDoItem of toDoList$(); track toDoItem.id){
+        <ion-item>
+          {{ toDoItem.name }}
+        </ion-item>
+      }
+    } @else {
+      <ion-label class="no-data-message">Нет "ToDo"</ion-label>
+    }
+  </ion-list>
+</ion-content>
+
+<ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab-button (click)="addToDo()">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
