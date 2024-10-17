@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>To Do List</ion-title>
+    <ion-title>Все "To Do"</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -8,7 +8,7 @@
   <ion-list>
     @if (toDoPageService.toDoList$().length) {
       @for (toDoItem of toDoPageService.toDoList$(); track toDoItem.id){
-        <ion-item>
+        <ion-item [routerLink]="'detail/' + toDoItem.id">
           {{ toDoItem.title }}
         </ion-item>
       }
