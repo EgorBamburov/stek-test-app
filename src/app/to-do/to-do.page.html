@@ -8,36 +8,30 @@
   <ion-list>
     @if (toDoPageService.toDoList$().length) {
       @for (toDoItem of toDoPageService.toDoList$(); track toDoItem.id){
-        <ion-item-sliding>
-          <ion-item [routerLink]="'detail/' + toDoItem.id">
-            <ion-label>{{ toDoItem.title }}</ion-label>
-            <ion-icon
-              [name]="toDoItem.completed ? 'checkmark-circle-outline' : 'close-circle-outline'"
-            />
-          </ion-item>
-
-          <ion-item-options>
-            <ion-item-option
-              color="danger"
-              (click)="onDelete(toDoItem.id)"
-            >
-              Удалить
-            </ion-item-option>
-          </ion-item-options>
-        </ion-item-sliding>
+        <app-to-do-item
+          [toDoItem]="toDoItem"
+          (delete)="onDelete($event)"
+        />
       }
     } @else if (!toDoPageService.toDoList$().length && !toDoPageService.isLoading$()) {
       <ion-label class="no-data-message">Нет "ToDo"</ion-label>
     }
   </ion-list>
 
-  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-    <ion-refresher-content></ion-refresher-content>
+  <ion-refresher
+    slot="fixed"
+    (ionRefresh)="handleRefresh($event)"
+  >
+    <ion-refresher-content />
   </ion-refresher>
-</ion-content>
 
-<ion-fab slot="fixed" vertical="bottom" horizontal="end">
-  <ion-fab-button (click)="openModal()">
-    <ion-icon name="add"></ion-icon>
-  </ion-fab-button>
-</ion-fab>
+  <ion-fab
+    slot="fixed"
+    vertical="bottom"
+    horizontal="end"
+  >
+    <ion-fab-button (click)="openModal()">
+      <ion-icon name="add" />
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

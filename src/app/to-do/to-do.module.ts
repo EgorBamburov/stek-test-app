@@ -8,6 +8,7 @@ import { ToDoPageRoutingModule } from './to-do-routing.module';
 
 import { ToDoPage } from './to-do.page';
 import {AddModalComponent} from "./components/add-modal/add-modal.component";
+import {ToDoItemComponent} from "./components/to-do-item/to-do-item.component";
 
 @NgModule({
   imports: [
@@ -15,7 +16,8 @@ import {AddModalComponent} from "./components/add-modal/add-modal.component";
     FormsModule,
     IonicModule,
     ToDoPageRoutingModule,
-    AddModalComponent
+    AddModalComponent,
+    ToDoItemComponent
   ],
   declarations: [ToDoPage]
 })
