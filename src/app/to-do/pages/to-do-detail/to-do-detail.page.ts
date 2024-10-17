@@ -3,7 +3,6 @@ import {ToDoDetailPageService} from "../../../services/to-do-detail-page/to-do-d
 import {ActivatedRoute} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {enableOrDisableFormHelper} from "../../../helpers/enableOrDisableForm.helper";
-import {ToDoPageService} from "../../../services/to-do-page.service";
 
 @Component({
   selector: 'app-to-do-detail',

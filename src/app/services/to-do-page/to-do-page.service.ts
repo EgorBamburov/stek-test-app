@@ -1,10 +1,10 @@
 import {DestroyRef, inject, Injectable, signal} from '@angular/core';
-import {IToDoElement} from "../interfaces/to-do-page/to-do-element.interface";
 import {HttpClient} from "@angular/common/http";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {AlertService} from "./alert/alert.service";
-import {LoadingService} from "./loading/loading.service";
 import {finalize, take} from "rxjs";
+import {AlertService} from "../alert/alert.service";
+import {LoadingService} from "../loading/loading.service";
+import {IToDoElement} from "../../interfaces/to-do-page/to-do-element.interface";
 
 @Injectable({
   providedIn: 'root'

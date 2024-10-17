@@ -1,7 +1,7 @@
 import {Component, DestroyRef, effect, inject, Injector, OnInit, ViewChild} from '@angular/core';
 import {IonicModule, IonModal, ModalController} from "@ionic/angular";
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
-import {ToDoPageService} from "../../../services/to-do-page.service";
+import {ToDoPageService} from "../../../services/to-do-page/to-do-page.service";
 
 @Component({
     selector: 'app-add-modal',

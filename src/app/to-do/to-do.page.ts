@@ -1,5 +1,5 @@
 import {Component, DestroyRef, inject, OnInit, signal} from '@angular/core';
-import {ToDoPageService} from "../services/to-do-page.service";
+import {ToDoPageService} from "../services/to-do-page/to-do-page.service";
 import {single} from "rxjs";
 import {IToDoElement} from "../interfaces/to-do-page/to-do-element.interface";
 import {ModalController} from "@ionic/angular";

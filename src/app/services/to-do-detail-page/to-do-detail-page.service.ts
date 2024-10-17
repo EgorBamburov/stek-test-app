@@ -6,7 +6,7 @@ import {LoadingService} from "../loading/loading.service";
 import {finalize, take} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {Router} from "@angular/router";
-import {ToDoPageService} from "../to-do-page.service";
+import {ToDoPageService} from "../to-do-page/to-do-page.service";
 
 @Injectable()
 export class ToDoDetailPageService {
