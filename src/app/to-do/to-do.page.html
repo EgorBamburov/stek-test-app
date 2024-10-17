@@ -10,7 +10,10 @@
       @for (toDoItem of toDoPageService.toDoList$(); track toDoItem.id){
         <ion-item-sliding>
           <ion-item [routerLink]="'detail/' + toDoItem.id">
-            {{ toDoItem.title }}
+            <ion-label>{{ toDoItem.title }}</ion-label>
+            <ion-icon
+              [name]="toDoItem.completed ? 'checkmark-circle-outline' : 'close-circle-outline'"
+            />
           </ion-item>
 
           <ion-item-options>
@@ -23,10 +26,14 @@
           </ion-item-options>
         </ion-item-sliding>
       }
-    } @else {
+    } @else if (!toDoPageService.toDoList$().length && !toDoPageService.isLoading$()) {
       <ion-label class="no-data-message">Нет "ToDo"</ion-label>
     }
   </ion-list>
+
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 </ion-content>
 
 <ion-fab slot="fixed" vertical="bottom" horizontal="end">

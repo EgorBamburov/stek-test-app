@@ -18,18 +18,28 @@ export class ToDoPageService {
 
   public toDoList$ = signal<IToDoElement[]>([])
   public isCloseModal$ = signal<boolean>(false)
+  public isLoading$ = signal<boolean>(false)
 
-  public getTodoList(destroy: DestroyRef): void {
-    this.loadingService.isLoading(true);
+  public getTodoList(destroy: DestroyRef, event?: any): void {
+    if (!event) this.loadingService.isLoading(true);
+
+    this.isLoading$.set(true)
 
     this.http.get('https://jsonplaceholder.typicode.com/todos')
       .pipe(
         take(1),
         takeUntilDestroyed(destroy),
-        finalize(() => this.loadingService.isLoading(false))
+        finalize(() => {
+          if (!event) this.loadingService.isLoading(false)
+          if (event) event.target.complete()
+          this.isLoading$.set(false)
+        })
       )
       .subscribe({
-      next: (res) => this.toDoList$.set(res as IToDoElement[]),
+      next: (res) => {
+        this.toDoList$.set(res as IToDoElement[])
+        if (event) event.target.complete()
+      },
       error: () => this.alertService.showErrorAlert('Не удалось загрузить списко ToDo')
     })
   }
@@ -46,12 +56,16 @@ export class ToDoPageService {
     }
 
     this.loadingService.isLoading(true);
+    this.isLoading$.set(true)
 
     this.http.post('https://jsonplaceholder.typicode.com/todos', toDoItem)
       .pipe(
         take(1),
         takeUntilDestroyed(destroy),
-        finalize(() => this.loadingService.isLoading(false))
+        finalize(() => {
+          this.loadingService.isLoading(false)
+          this.isLoading$.set(false)
+        })
       )
       .subscribe({
       next: (res) => {

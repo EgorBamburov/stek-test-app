@@ -30,4 +30,8 @@ export class ToDoPage implements OnInit {
   public onDelete(id: number): void {
     this.toDoPageService.deleteTodo(this.destroy, id)
   }
+
+  public handleRefresh(event: any): void {
+    this.toDoPageService.getTodoList(this.destroy, event)
+  }
 }
