@@ -5,6 +5,7 @@ import {IToDoElement} from "../interfaces/to-do-page/to-do-element.interface";
 import {ModalController} from "@ionic/angular";
 import {AddModalComponent} from "./components/add-modal/add-modal.component";
 import {ToDoApiService} from "../services/api/to-do/to-do-api.service";
+import {ToDoStateService} from "../services/state/to-do-state.service";
 
 @Component({
   selector: 'app-to-do',
@@ -12,7 +13,9 @@ import {ToDoApiService} from "../services/api/to-do/to-do-api.service";
   styleUrls: ['./to-do.page.scss']
 })
 export class ToDoPage implements OnInit {
+  public stateService = inject(ToDoStateService);
   public toDoPageService = inject(ToDoPageService);
+
   private destroyRef = inject(DestroyRef);
   private modalController = inject(ModalController)
 

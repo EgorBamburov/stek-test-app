@@ -5,6 +5,7 @@ import {AlertService} from "../alert/alert.service";
 import {LoadingService} from "../loading/loading.service";
 import {IToDoElement} from "../../interfaces/to-do-page/to-do-element.interface";
 import {ToDoApiService} from "../api/to-do/to-do-api.service";
+import {ToDoStateService} from "../state/to-do-state.service";
 
 @Injectable({
   providedIn: 'root'
@@ -13,6 +14,7 @@ export class ToDoPageService {
   private alertService = inject(AlertService);
   private loadingService = inject(LoadingService);
   private apiService = inject(ToDoApiService);
+  private stateService = inject(ToDoStateService);
 
   constructor() {}
 
@@ -37,7 +39,7 @@ export class ToDoPageService {
       )
       .subscribe({
       next: (res) => {
-        this.toDoList$.set(res as IToDoElement[])
+        this.stateService.setToDoList(res as IToDoElement[])
         if (event) event.target.complete()
       },
       error: () => this.alertService.showErrorAlert('Не удалось загрузить списко ToDo')

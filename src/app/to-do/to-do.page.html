@@ -6,14 +6,14 @@
 
 <ion-content>
   <ion-list>
-    @if (toDoPageService.toDoList$().length) {
-      @for (toDoItem of toDoPageService.toDoList$(); track toDoItem.id){
+    @if (stateService.toDoList$().length) {
+      @for (toDoItem of stateService.toDoList$(); track toDoItem.id){
         <app-to-do-item
           [toDoItem]="toDoItem"
           (delete)="onDelete($event)"
         />
       }
-    } @else if (!toDoPageService.toDoList$().length && !toDoPageService.isLoading$()) {
+    } @else if (!stateService.toDoList$().length && !toDoPageService.isLoading$()) {
       <ion-label class="no-data-message">Нет "ToDo"</ion-label>
     }
   </ion-list>
