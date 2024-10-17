@@ -32,7 +32,6 @@
     <ion-item>
       <ion-select
         formControlName="completed"
-        [disabled]="!isEdit$()"
       >
         <ion-select-option [value]="false">Не завершена</ion-select-option>
         <ion-select-option [value]="true">Завершена</ion-select-option>

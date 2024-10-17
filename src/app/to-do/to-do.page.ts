@@ -26,4 +26,8 @@ export class ToDoPage implements OnInit {
 
     addModal.present()
   }
+
+  public onDelete(id: number): void {
+    this.toDoPageService.deleteTodo(this.destroy, id)
+  }
 }

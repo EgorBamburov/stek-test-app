@@ -3,6 +3,7 @@ import {ToDoDetailPageService} from "../../../services/to-do-detail-page/to-do-d
 import {ActivatedRoute} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {enableOrDisableFormHelper} from "../../../helpers/enableOrDisableForm.helper";
+import {ToDoPageService} from "../../../services/to-do-page.service";
 
 @Component({
   selector: 'app-to-do-detail',
@@ -28,6 +29,7 @@ export class ToDoDetailPage implements OnInit {
     this.getCurrentIdFromLink()
     this.getCurrentTodo()
     this.subScribeOnCurrentToDo()
+    this.subOnSuccessUpdate()
   }
 
   public onCancel(): void {
@@ -36,7 +38,7 @@ export class ToDoDetailPage implements OnInit {
 
   public onEdit(): void {
     if (this.isEdit$()) {
-
+      this.toDoDetailPageService.updateToDo(this.destroyRef, this.form.value.title, this.form.value.completed)
     } else {
       this.isEdit$.set(true)
       enableOrDisableFormHelper(this.form, true)
@@ -76,5 +78,15 @@ export class ToDoDetailPage implements OnInit {
       title: toDoData?.title,
       completed: toDoData?.completed
     })
+  }
+
+  private subOnSuccessUpdate(): void {
+    effect(() => {
+      if (this.toDoDetailPageService.isSuccessUpdate$()) {
+        this.isEdit$.set(false);
+        enableOrDisableFormHelper(this.form, false);
+        this.toDoDetailPageService.isSuccessUpdate$.set(false);
+      }
+    }, { injector: this.injector, allowSignalWrites: true });
   }
 }
