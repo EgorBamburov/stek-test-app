@@ -9,6 +9,7 @@ import { ToDoPageRoutingModule } from './to-do-routing.module';
 import { ToDoPage } from './to-do.page';
 import {AddModalComponent} from "./components/add-modal/add-modal.component";
 import {ToDoItemComponent} from "./components/to-do-item/to-do-item.component";
+import {ToDoApiService} from "../services/api/to-do/to-do-api.service";
 
 @NgModule({
   imports: [
@@ -19,6 +20,6 @@ import {ToDoItemComponent} from "./components/to-do-item/to-do-item.component";
     AddModalComponent,
     ToDoItemComponent
   ],
-  declarations: [ToDoPage]
+  declarations: [ToDoPage],
 })
 export class ToDoPageModule {}

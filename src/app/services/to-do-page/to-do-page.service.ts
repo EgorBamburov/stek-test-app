@@ -1,18 +1,18 @@
 import {DestroyRef, inject, Injectable, signal} from '@angular/core';
-import {HttpClient} from "@angular/common/http";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {finalize, take} from "rxjs";
 import {AlertService} from "../alert/alert.service";
 import {LoadingService} from "../loading/loading.service";
 import {IToDoElement} from "../../interfaces/to-do-page/to-do-element.interface";
+import {ToDoApiService} from "../api/to-do/to-do-api.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ToDoPageService {
-  private http = inject(HttpClient);
   private alertService = inject(AlertService);
   private loadingService = inject(LoadingService);
+  private apiService = inject(ToDoApiService);
 
   constructor() {}
 
@@ -25,7 +25,7 @@ export class ToDoPageService {
 
     this.isLoading$.set(true)
 
-    this.http.get('https://jsonplaceholder.typicode.com/todos')
+    this.apiService.get()
       .pipe(
         take(1),
         takeUntilDestroyed(destroy),
@@ -58,7 +58,7 @@ export class ToDoPageService {
     this.loadingService.isLoading(true);
     this.isLoading$.set(true)
 
-    this.http.post('https://jsonplaceholder.typicode.com/todos', toDoItem)
+    this.apiService.post(toDoItem)
       .pipe(
         take(1),
         takeUntilDestroyed(destroy),
@@ -94,7 +94,7 @@ export class ToDoPageService {
   public deleteTodo(destroyRef: DestroyRef, id: number): void {
     this.loadingService.isLoading(true);
 
-    this.http.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+    this.apiService.delete(id)
       .pipe(
         take(1),
         takeUntilDestroyed(destroyRef),
