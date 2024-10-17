@@ -67,4 +67,32 @@ export class ToDoPageService {
   public setCloseModal(isClose: boolean): void {
     this.isCloseModal$.set(isClose)
   }
+
+  public updateToDoLocal(toDo: IToDoElement): void {
+    this.toDoList$().find((element) => {
+      if (element.id === toDo.id) {
+        element.title = toDo.title
+        element.completed = toDo.completed
+      }
+    })
+  }
+
+  public deleteTodo(destroyRef: DestroyRef, id: number): void {
+    this.loadingService.isLoading(true);
+
+    this.http.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+      .pipe(
+        take(1),
+        takeUntilDestroyed(destroyRef),
+        finalize(() => this.loadingService.isLoading(false))
+      )
+      .subscribe({
+        next: () => {
+          const index = this.toDoList$().findIndex((elem) => elem.id === id)
+
+          this.toDoList$().splice(index , 1)
+        },
+        error: () => this.alertService.showErrorAlert('Не удалось удалить To Do')
+      })
+  }
 }
