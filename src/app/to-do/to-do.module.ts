@@ -7,13 +7,15 @@ import { IonicModule } from '@ionic/angular';
 import { ToDoPageRoutingModule } from './to-do-routing.module';
 
 import { ToDoPage } from './to-do.page';
+import {AddModalComponent} from "./components/add-modal/add-modal.component";
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ToDoPageRoutingModule
+    ToDoPageRoutingModule,
+    AddModalComponent
   ],
   declarations: [ToDoPage]
 })

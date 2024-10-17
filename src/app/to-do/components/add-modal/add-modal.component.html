@@ -1,0 +1,29 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="close()">Отмена</ion-button>
+    </ion-buttons>
+    <ion-title>Создать ToDo</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="save()" [disabled]="form.invalid">Сохранить</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <form [formGroup]="form">
+    <ion-item>
+      <ion-input
+        formControlName="title"
+        type="text"
+        placeholder="Введите название"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-select formControlName="completed">
+        <ion-select-option [value]="false">Не завершена</ion-select-option>
+        <ion-select-option [value]="true">Завершена</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </form>
+</ion-content>
