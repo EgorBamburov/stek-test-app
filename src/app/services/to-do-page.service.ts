@@ -59,7 +59,6 @@ export class ToDoPageService {
         this.setCloseModal(true)
       },
       error: () => {
-
         this.alertService.showErrorAlert('Не удалось создать ToDo')
       }
     });

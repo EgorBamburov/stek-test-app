@@ -1,0 +1,42 @@
+<ion-header>
+  <ion-toolbar>
+    @if(!isEdit$()) {
+      <ion-back-button slot="start" />
+    } @else {
+      <ion-buttons slot="start">
+        <ion-button (click)="onCancel()">Отмена</ion-button>
+      </ion-buttons>
+    }
+    <ion-title>to-do-detail</ion-title>
+    <ion-buttons slot="end">
+      <ion-button
+        [disabled]="form.invalid"
+        (click)="onEdit()"
+      >
+        {{ !isEdit$() ? 'Изменить' : 'Сохранить' }}
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <form [formGroup]="form">
+    <ion-item>
+      <ion-input
+        formControlName="title"
+        type="text"
+        placeholder="Введите название"
+      ></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-select
+        formControlName="completed"
+        [disabled]="!isEdit$()"
+      >
+        <ion-select-option [value]="false">Не завершена</ion-select-option>
+        <ion-select-option [value]="true">Завершена</ion-select-option>
+      </ion-select>
+    </ion-item>
+  </form>
+</ion-content>
