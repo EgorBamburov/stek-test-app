@@ -11,4 +11,8 @@ export class ToDoStateService {
   public setToDoList(list: IToDoElement[]): void {
     this.toDoList$.set(list);
   }
+
+  public addNewToDo(toDo: IToDoElement): void {
+    this.toDoList$().push(toDo)
+  }
 }

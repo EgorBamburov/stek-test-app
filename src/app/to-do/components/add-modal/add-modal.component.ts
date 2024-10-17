@@ -11,7 +11,8 @@ import {ToDoPageService} from "../../../services/to-do-page/to-do-page.service";
     imports: [
         IonicModule,
         ReactiveFormsModule
-    ]
+    ],
+  providers: [ToDoPageService]
 })
 export class AddModalComponent  implements OnInit {
   public form!: FormGroup;

@@ -10,7 +10,8 @@ import {ToDoStateService} from "../services/state/to-do-state.service";
 @Component({
   selector: 'app-to-do',
   templateUrl: './to-do.page.html',
-  styleUrls: ['./to-do.page.scss']
+  styleUrls: ['./to-do.page.scss'],
+  providers: [ToDoPageService]
 })
 export class ToDoPage implements OnInit {
   public stateService = inject(ToDoStateService);

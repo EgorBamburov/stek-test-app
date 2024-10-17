@@ -7,9 +7,7 @@ import {IToDoElement} from "../../interfaces/to-do-page/to-do-element.interface"
 import {ToDoApiService} from "../api/to-do/to-do-api.service";
 import {ToDoStateService} from "../state/to-do-state.service";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ToDoPageService {
   private alertService = inject(AlertService);
   private loadingService = inject(LoadingService);
@@ -18,7 +16,6 @@ export class ToDoPageService {
 
   constructor() {}
 
-  public toDoList$ = signal<IToDoElement[]>([])
   public isCloseModal$ = signal<boolean>(false)
   public isLoading$ = signal<boolean>(false)
 
@@ -47,7 +44,7 @@ export class ToDoPageService {
   }
 
   public addToDo(destroy: DestroyRef, title: string, completed: boolean): void {
-    const id = (this.toDoList$().length + 1)
+    const id = (this.stateService.toDoList$().length + 1)
     const userId = 1
 
     const toDoItem: IToDoElement = {
@@ -71,7 +68,7 @@ export class ToDoPageService {
       )
       .subscribe({
       next: (res) => {
-        this.toDoList$().push(res as IToDoElement)
+        this.stateService.toDoList$().push(res as IToDoElement)
         this.setCloseModal(true)
       },
       error: () => {
@@ -85,7 +82,7 @@ export class ToDoPageService {
   }
 
   public updateToDoLocal(toDo: IToDoElement): void {
-    this.toDoList$().find((element) => {
+    this.stateService.toDoList$().find((element) => {
       if (element.id === toDo.id) {
         element.title = toDo.title
         element.completed = toDo.completed
@@ -104,9 +101,9 @@ export class ToDoPageService {
       )
       .subscribe({
         next: () => {
-          const index = this.toDoList$().findIndex((elem) => elem.id === id)
+          const index = this.stateService.toDoList$().findIndex((elem) => elem.id === id)
 
-          this.toDoList$().splice(index , 1)
+          this.stateService.toDoList$().splice(index , 1)
         },
         error: () => this.alertService.showErrorAlert('Не удалось удалить To Do')
       })
