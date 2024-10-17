@@ -1,12 +1,12 @@
 import {DestroyRef, inject, Injectable, signal} from "@angular/core";
-import {HttpClient} from "@angular/common/http";
 import {IToDoElement} from "../../interfaces/to-do-page/to-do-element.interface";
 import {AlertService} from "../alert/alert.service";
 import {LoadingService} from "../loading/loading.service";
 import {finalize, take} from "rxjs";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {Router} from "@angular/router";
-import {ToDoPageService} from "../to-do-page.service";
+import {ToDoPageService} from "../to-do-page/to-do-page.service";
+import {ToDoApiService} from "../api/to-do/to-do-api.service";
 
 @Injectable()
 export class ToDoDetailPageService {
@@ -17,14 +17,13 @@ export class ToDoDetailPageService {
   private alertService = inject(AlertService);
   private loadingService = inject(LoadingService);
   private toDoPageService = inject(ToDoPageService);
-  constructor(
-    private http: HttpClient,
-    private router: Router
-    ) {}
+  private apiService = inject(ToDoApiService)
+  private router = inject(Router)
+  constructor() {}
 
   public getCurrentTodo(id: string, destroyRef: DestroyRef): void {
     this.loadingService.isLoading(true);
-    this.http.get(`https://jsonplaceholder.typicode.com/todos/${id}`)
+    this.apiService.get(id)
       .pipe(
         take(1),
         takeUntilDestroyed(destroyRef),
@@ -50,7 +49,7 @@ export class ToDoDetailPageService {
 
       this.loadingService.isLoading(true)
 
-      this.http.patch(`https://jsonplaceholder.typicode.com/todos/${this.currentToDo$()?.id}`, toDo)
+      this.apiService.patch(toDo as IToDoElement, this.currentToDo$()?.id as number)
         .pipe(
           take(1),
           takeUntilDestroyed(destroyRef),

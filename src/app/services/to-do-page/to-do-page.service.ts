@@ -1,22 +1,21 @@
 import {DestroyRef, inject, Injectable, signal} from '@angular/core';
-import {IToDoElement} from "../interfaces/to-do-page/to-do-element.interface";
-import {HttpClient} from "@angular/common/http";
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
-import {AlertService} from "./alert/alert.service";
-import {LoadingService} from "./loading/loading.service";
 import {finalize, take} from "rxjs";
+import {AlertService} from "../alert/alert.service";
+import {LoadingService} from "../loading/loading.service";
+import {IToDoElement} from "../../interfaces/to-do-page/to-do-element.interface";
+import {ToDoApiService} from "../api/to-do/to-do-api.service";
+import {ToDoStateService} from "../state/to-do-state.service";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class ToDoPageService {
-  private http = inject(HttpClient);
   private alertService = inject(AlertService);
   private loadingService = inject(LoadingService);
+  private apiService = inject(ToDoApiService);
+  private stateService = inject(ToDoStateService);
 
   constructor() {}
 
-  public toDoList$ = signal<IToDoElement[]>([])
   public isCloseModal$ = signal<boolean>(false)
   public isLoading$ = signal<boolean>(false)
 
@@ -25,7 +24,7 @@ export class ToDoPageService {
 
     this.isLoading$.set(true)
 
-    this.http.get('https://jsonplaceholder.typicode.com/todos')
+    this.apiService.get()
       .pipe(
         take(1),
         takeUntilDestroyed(destroy),
@@ -37,7 +36,7 @@ export class ToDoPageService {
       )
       .subscribe({
       next: (res) => {
-        this.toDoList$.set(res as IToDoElement[])
+        this.stateService.setToDoList(res as IToDoElement[])
         if (event) event.target.complete()
       },
       error: () => this.alertService.showErrorAlert('Не удалось загрузить списко ToDo')
@@ -45,7 +44,7 @@ export class ToDoPageService {
   }
 
   public addToDo(destroy: DestroyRef, title: string, completed: boolean): void {
-    const id = (this.toDoList$().length + 1)
+    const id = (this.stateService.toDoList$().length + 1)
     const userId = 1
 
     const toDoItem: IToDoElement = {
@@ -58,7 +57,7 @@ export class ToDoPageService {
     this.loadingService.isLoading(true);
     this.isLoading$.set(true)
 
-    this.http.post('https://jsonplaceholder.typicode.com/todos', toDoItem)
+    this.apiService.post(toDoItem)
       .pipe(
         take(1),
         takeUntilDestroyed(destroy),
@@ -69,7 +68,7 @@ export class ToDoPageService {
       )
       .subscribe({
       next: (res) => {
-        this.toDoList$().push(res as IToDoElement)
+        this.stateService.toDoList$().push(res as IToDoElement)
         this.setCloseModal(true)
       },
       error: () => {
@@ -83,7 +82,7 @@ export class ToDoPageService {
   }
 
   public updateToDoLocal(toDo: IToDoElement): void {
-    this.toDoList$().find((element) => {
+    this.stateService.toDoList$().find((element) => {
       if (element.id === toDo.id) {
         element.title = toDo.title
         element.completed = toDo.completed
@@ -94,7 +93,7 @@ export class ToDoPageService {
   public deleteTodo(destroyRef: DestroyRef, id: number): void {
     this.loadingService.isLoading(true);
 
-    this.http.delete(`https://jsonplaceholder.typicode.com/todos/${id}`)
+    this.apiService.delete(id)
       .pipe(
         take(1),
         takeUntilDestroyed(destroyRef),
@@ -102,9 +101,9 @@ export class ToDoPageService {
       )
       .subscribe({
         next: () => {
-          const index = this.toDoList$().findIndex((elem) => elem.id === id)
+          const index = this.stateService.toDoList$().findIndex((elem) => elem.id === id)
 
-          this.toDoList$().splice(index , 1)
+          this.stateService.toDoList$().splice(index , 1)
         },
         error: () => this.alertService.showErrorAlert('Не удалось удалить To Do')
       })

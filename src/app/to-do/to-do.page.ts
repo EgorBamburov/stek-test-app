@@ -1,22 +1,26 @@
-import {Component, DestroyRef, inject, OnInit, signal} from '@angular/core';
-import {ToDoPageService} from "../services/to-do-page.service";
-import {single} from "rxjs";
-import {IToDoElement} from "../interfaces/to-do-page/to-do-element.interface";
+import {Component, DestroyRef, inject, OnInit} from '@angular/core';
+import {ToDoPageService} from "../services/to-do-page/to-do-page.service";
 import {ModalController} from "@ionic/angular";
 import {AddModalComponent} from "./components/add-modal/add-modal.component";
+import {ToDoStateService} from "../services/state/to-do-state.service";
 
 @Component({
   selector: 'app-to-do',
   templateUrl: './to-do.page.html',
   styleUrls: ['./to-do.page.scss'],
+  providers: [ToDoPageService]
 })
 export class ToDoPage implements OnInit {
-  public toDoPageService = inject(ToDoPageService)
+  public stateService = inject(ToDoStateService);
+  public toDoPageService = inject(ToDoPageService);
 
-  constructor(private destroy: DestroyRef, private modalController: ModalController) {}
+  private destroyRef = inject(DestroyRef);
+  private modalController = inject(ModalController)
+
+  constructor() {}
 
   ngOnInit(): void {
-    this.toDoPageService.getTodoList(this.destroy)
+    this.toDoPageService.getTodoList(this.destroyRef)
   }
 
   public async openModal(): Promise<void> {
@@ -28,10 +32,10 @@ export class ToDoPage implements OnInit {
   }
 
   public onDelete(id: number): void {
-    this.toDoPageService.deleteTodo(this.destroy, id)
+    this.toDoPageService.deleteTodo(this.destroyRef, id)
   }
 
   public handleRefresh(event: any): void {
-    this.toDoPageService.getTodoList(this.destroy, event)
+    this.toDoPageService.getTodoList(this.destroyRef, event)
   }
 }

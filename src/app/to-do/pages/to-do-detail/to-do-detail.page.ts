@@ -1,15 +1,15 @@
-import {Component, DestroyRef, effect, inject, Injector, OnDestroy, OnInit, signal} from '@angular/core';
+import {Component, DestroyRef, effect, inject, Injector, OnInit, signal} from '@angular/core';
 import {ToDoDetailPageService} from "../../../services/to-do-detail-page/to-do-detail-page.service";
 import {ActivatedRoute} from "@angular/router";
 import {FormControl, FormGroup, Validators} from "@angular/forms";
 import {enableOrDisableFormHelper} from "../../../helpers/enableOrDisableForm.helper";
-import {ToDoPageService} from "../../../services/to-do-page.service";
+import {ToDoPageService} from "../../../services/to-do-page/to-do-page.service";
 
 @Component({
   selector: 'app-to-do-detail',
   templateUrl: './to-do-detail.page.html',
   styleUrls: ['./to-do-detail.page.scss'],
-  providers: [ToDoDetailPageService]
+  providers: [ToDoDetailPageService, ToDoPageService]
 })
 export class ToDoDetailPage implements OnInit {
   public form!: FormGroup;
