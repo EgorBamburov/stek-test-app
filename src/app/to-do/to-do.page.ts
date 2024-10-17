@@ -1,10 +1,7 @@
-import {Component, DestroyRef, inject, OnInit, signal} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit} from '@angular/core';
 import {ToDoPageService} from "../services/to-do-page/to-do-page.service";
-import {single} from "rxjs";
-import {IToDoElement} from "../interfaces/to-do-page/to-do-element.interface";
 import {ModalController} from "@ionic/angular";
 import {AddModalComponent} from "./components/add-modal/add-modal.component";
-import {ToDoApiService} from "../services/api/to-do/to-do-api.service";
 import {ToDoStateService} from "../services/state/to-do-state.service";
 
 @Component({
