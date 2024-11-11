@@ -7,6 +7,7 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 import { provideHttpClient } from "@angular/common/http";
+import {FirebaseX} from "@ionic-native/firebase-x/ngx";
 
 @NgModule({
   declarations: [AppComponent],
@@ -17,7 +18,8 @@ import { provideHttpClient } from "@angular/common/http";
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideHttpClient()
+    provideHttpClient(),
+    FirebaseX
   ],
   bootstrap: [AppComponent],
 })
